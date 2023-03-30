@@ -7,15 +7,10 @@ import {Calculator} from "../Calculator/Calculator";
 import {CalcOutput} from "../CalcOutput/CalcOutput";
 import {CartDrawer} from "../Cart/CartDrawer";
 
-const paperStyleRigth = {
-    width: "300px",
+const paperStyle= {
     padding: '20px'
 }
 
-const paperStyleLeft = {
-    width: "500px",
-    padding: '20px'
-}
 
 export const Main = () => {
 
@@ -23,14 +18,14 @@ export const Main = () => {
         <main className={s.main}>
             <Container style={{paddingTop: 70}}>
                 <CartDrawer/>
-                <Grid container spacing={2} style={{marginTop: 160}}>
-                    <Grid item xs={6}>
-                        <Paper style={paperStyleRigth} elevation={8}>
+                <Grid container spacing={2} style={{marginTop: 120, justifyContent: "space-between"}}>
+                    <Grid item xs={4}>
+                        <Paper style={paperStyle} elevation={8}>
                             <Calculator/>
                         </Paper>
                     </Grid>
-                    <Grid item xs={6}>
-                        <Paper style={paperStyleLeft}
+                    <Grid item xs={7}>
+                        <Paper style={paperStyle}
                                elevation={8}>
                             <CalcOutput/>
                         </Paper>

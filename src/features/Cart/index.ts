@@ -1,10 +1,10 @@
 import * as cartSelectors from './cart-selectors'
-import { cartSlice, asyncCartActions} from './cartSlice'
+import {cartSlice} from './cartSlice'
 
 const cartReducer = cartSlice.reducer
 
 const cartActions = {
-    ...asyncCartActions
+    ...cartSlice.actions
 }
 
 

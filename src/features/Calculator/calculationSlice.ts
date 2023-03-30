@@ -1,31 +1,36 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 
 //Thunks
 
 export const updateCalculationTC = createAsyncThunk('calculation/updateCalc', (param: ResultType, thunkApI) => {
-    thunkApI.dispatch(updateCalculation({result: param}))
-})
-
-const initialState = {} as ResultType
+    thunkApI.dispatch(updateCalculation({result: param}));
+    thunkApI.dispatch(setIsCalcDone());
+});
 
 export const calculationSlice = createSlice({
     name: 'calculation',
-    initialState: initialState,
+    initialState: {
+        result: {} as ResultType,
+        isCalcDone: false
+    },
     reducers: {
-        updateCalculation(state, action: PayloadAction<{result: ResultType}>) {
-            return action.payload.result
+        updateCalculation(state, action: PayloadAction<{ result: ResultType }>) {
+            state.result = action.payload.result;
+        },
+        setIsCalcDone(state) {
+            state.isCalcDone = true;
         }
     }
-})
+});
 
-const {updateCalculation} = calculationSlice.actions
+//Actions
+
+const {updateCalculation, setIsCalcDone} = calculationSlice.actions;
 
 export const asyncCalculationActions = {
     updateCalculationTC
-}
-
-export const calculationReducer = calculationSlice.reducer
+};
 
 //Types
 

@@ -1,0 +1,6 @@
+.tableBlock {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    align-items: flex-start;
+}
