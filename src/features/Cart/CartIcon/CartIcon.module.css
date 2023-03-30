@@ -1,0 +1,22 @@
+.cartBlock {
+    position: relative;
+}
+
+.cartBuble {
+    position: absolute;
+    top: -1px;
+    left: 21px;
+    z-index: 10;
+    background-color: crimson;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bubleItem {
+    font-size: 11px;
+    margin-bottom: 2px;
+}
