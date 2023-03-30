@@ -1,33 +1,32 @@
 import React from 'react';
 import Input from '@mui/joy/Input';
 import {useAppSelector} from '../../hooks/useAppSelector';
-import {selectFixConfig, selectLengthConfig, selectStrengthConfig, selectWidthConfig} from './config-selectors';
 import Typography from '@mui/material/Typography';
 import {FormLabel} from '@mui/joy';
-import {selectFixType, selectMaterialsType, selectPipesType} from './material-selector';
 import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
 import MenuItem from '@mui/material/MenuItem';
 import * as Yup from 'yup';
-import {asyncCalculationActions, ResultType} from './calculationSlice';
+import {ResultType} from './calculationSlice';
 import {useActions} from '../../hooks/useAction';
 import FormControl from '@mui/material/FormControl';
 import {SyperSelect} from '../../common/SuperSelect/SyperSelect';
 import s from './Calculator.module.css';
+import {calculationActions, configSelectors, materialSelectors} from './index';
 
 
 export const Calculator = () => {
 
-    const lengthConfig = useAppSelector(selectLengthConfig)
-    const widthConfig = useAppSelector(selectWidthConfig)
-    const strengthConfig = useAppSelector(selectStrengthConfig)
-    const materialsType = useAppSelector(selectMaterialsType)
-    const pipesType = useAppSelector(selectPipesType)
-    const fixType = useAppSelector(selectFixType)
-    const fixConfig = useAppSelector(selectFixConfig)
+    const lengthConfig = useAppSelector(configSelectors.selectLengthConfig)
+    const widthConfig = useAppSelector(configSelectors.selectWidthConfig)
+    const strengthConfig = useAppSelector(configSelectors.selectStrengthConfig)
+    const materialsType = useAppSelector(materialSelectors.selectMaterialsType)
+    const pipesType = useAppSelector(materialSelectors.selectPipesType)
+    const fixType = useAppSelector(materialSelectors.selectFixType)
+    const fixConfig = useAppSelector(configSelectors.selectFixConfig)
 
 
-    const {updateCalculationTC} = useActions(asyncCalculationActions);
+    const {updateCalculationTC} = useActions(calculationActions);
 
     const inputStrength = strengthConfig.map(el => (<MenuItem key={el.key} value={el.step}>{el.name}</MenuItem>))
     const inputMaterialType = materialsType.map((el, index) => (
@@ -93,6 +92,7 @@ export const Calculator = () => {
             width: Yup.number()
         }),
         onSubmit: (values: InputValueType) => {
+            console.log(calculatePrice(values));
             updateCalculationTC(calculatePrice(values));
         },
     })

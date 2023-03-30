@@ -51,3 +51,5 @@ export type ResultType = {
     fixName: string
     fixUnit: string
 }
+
+export type CalculationSliceType = ReturnType<typeof calculationSlice.getInitialState>
