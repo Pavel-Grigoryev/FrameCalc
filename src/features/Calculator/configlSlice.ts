@@ -29,3 +29,4 @@ export const configSlice = createSlice({
 export const asyncConfigActions = {
     getConfigTC
 };
+

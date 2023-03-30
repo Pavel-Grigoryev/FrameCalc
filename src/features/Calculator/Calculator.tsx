@@ -7,77 +7,48 @@ import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
 import MenuItem from '@mui/material/MenuItem';
 import * as Yup from 'yup';
-import {ResultType} from './calculationSlice';
 import {useActions} from '../../hooks/useAction';
 import FormControl from '@mui/material/FormControl';
 import {SyperSelect} from '../../common/SuperSelect/SyperSelect';
 import s from './Calculator.module.css';
 import {calculationActions, configSelectors, materialSelectors} from './index';
+import {calculatePrice} from '../../utils/calculatePrice-utils';
 
 
 export const Calculator = () => {
 
-    const lengthConfig = useAppSelector(configSelectors.selectLengthConfig)
-    const widthConfig = useAppSelector(configSelectors.selectWidthConfig)
-    const strengthConfig = useAppSelector(configSelectors.selectStrengthConfig)
-    const materialsType = useAppSelector(materialSelectors.selectMaterialsType)
-    const pipesType = useAppSelector(materialSelectors.selectPipesType)
-    const fixType = useAppSelector(materialSelectors.selectFixType)
-    const fixConfig = useAppSelector(configSelectors.selectFixConfig)
+    const lengthConfig = useAppSelector(configSelectors.selectLengthConfig);
+    const widthConfig = useAppSelector(configSelectors.selectWidthConfig);
+    const strengthConfig = useAppSelector(configSelectors.selectStrengthConfig);
+    const materialsType = useAppSelector(materialSelectors.selectMaterialsType);
+    const pipesType = useAppSelector(materialSelectors.selectPipesType);
+    const fixType = useAppSelector(materialSelectors.selectFixType);
+    const fixConfig = useAppSelector(configSelectors.selectFixConfig);
 
 
     const {updateCalculationTC} = useActions(calculationActions);
 
-    const inputStrength = strengthConfig.map(el => (<MenuItem key={el.key} value={el.step}>{el.name}</MenuItem>))
+    const inputStrength = strengthConfig.map(el => (<MenuItem key={el.key} value={el.step}>{el.name}</MenuItem>));
     const inputMaterialType = materialsType.map((el, index) => (
-        <MenuItem key={index} value={el.name}>{el.name}</MenuItem>))
+        <MenuItem key={index} value={el.name}>{el.name}</MenuItem>));
     const inputPipeType = pipesType.map((el, index) => (
-        <MenuItem key={index} value={el.name}>{el.name}</MenuItem>))
+        <MenuItem key={index} value={el.name}>{el.name}</MenuItem>));
 
-    const calculatePrice = (values: InputValueType) => {
-        let calcResult = {} as ResultType;
+
+    const filterCalculateData = (values: InputValueType) => {
         if (values.width && values.length && values.strength) {
-            const area = values.length * values.width;
-            calcResult.area = area;
-
             const currentMaterial = materialsType.find(el => el.name === values.material);
             const currentPipe = pipesType.find(el => el.name === values.pipe);
-
-            if (currentMaterial?.width && currentPipe?.width) {
-                const quantityLists = Math.ceil(area / currentMaterial.width)
-                const costLists = +(quantityLists * currentMaterial.price).toFixed(1)
-                calcResult.quantityLists = quantityLists
-                calcResult.costLists = costLists
-                calcResult.listName = currentMaterial.name
-                calcResult.listUnit = currentMaterial.unit
-                const quantityPipesLength = Math.ceil(values.length / values.strength);
-                const stepFrameLength = ((values.length - quantityPipesLength * currentPipe.width / 1000) / quantityPipesLength).toFixed(2)
-
-                const sumLenghPipesInWidth = quantityPipesLength * values.width
-                const quantityPipesWidth = Math.ceil(values.width / values.strength)
-                const stepFrameWidth = ((values.width - quantityPipesWidth * currentPipe.width / 1000) / quantityPipesWidth).toFixed(2)
-                const sumLenghPipesInLength = quantityPipesWidth * values.length - (currentPipe.width / 1000) * quantityPipesLength * quantityPipesWidth
-                const totalPipesLength = Math.ceil(sumLenghPipesInWidth + sumLenghPipesInLength)
-                const costPipes = +(totalPipesLength * currentPipe.price).toFixed(1)
-                calcResult.stepFrameWidth = stepFrameWidth
-                calcResult.stepFrameLength = stepFrameLength
-                calcResult.totalPipesLength = totalPipesLength
-                calcResult.costPipes = costPipes
-                calcResult.pipeName = currentPipe.name
-                calcResult.pipeUnit = currentPipe.unit
-
-                const currentFix = fixConfig.find(el => el.key === currentMaterial.material);
-                if (currentFix?.value && fixType?.name && fixType?.name) {
-                    const quantityFixes = Math.ceil(currentFix.value * area)
-                    calcResult.costFixes = +(quantityFixes * fixType.price).toFixed(1)
-                    calcResult.quantityFixes = quantityFixes
-                    calcResult.fixName = fixType.name
-                    calcResult.fixUnit = fixType.unit
+            const currentFix = fixConfig.find(el => el.key === currentMaterial?.material);
+            if (currentMaterial !== undefined && currentPipe !== undefined && currentFix !== undefined && fixType !== undefined) {
+                const finalCalc = calculatePrice(values.width, values.length, values.strength, currentMaterial, currentPipe, currentFix, fixType);
+                if (finalCalc) {
+                    updateCalculationTC(finalCalc);
                 }
             }
         }
-        return calcResult
-    }
+    };
+
 
     const formik = useFormik({
         initialValues: {
@@ -92,10 +63,10 @@ export const Calculator = () => {
             width: Yup.number()
         }),
         onSubmit: (values: InputValueType) => {
-            console.log(calculatePrice(values));
-            updateCalculationTC(calculatePrice(values));
+            console.log(values);
+            filterCalculateData(values);
         },
-    })
+    });
 
 
     return (
@@ -104,7 +75,8 @@ export const Calculator = () => {
                 Выбор материала
             </Typography>
             <form onSubmit={formik.handleSubmit} className={s.form}>
-                <SyperSelect label={'Выберите листы покрытия'} formikGetFieldProps={formik.getFieldProps('material')}>
+                <SyperSelect label={'Выберите листы покрытия'}
+                             formikGetFieldProps={formik.getFieldProps('material')}>
                     {inputMaterialType}
                 </SyperSelect>
                 <SyperSelect label={'Выберите тип трубы'} formikGetFieldProps={formik.getFieldProps('pipe')}>
