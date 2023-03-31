@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Pavel-Grigoryev/FrameCalc/static/css/main.a12dce70.css",
+    "main.js": "/Pavel-Grigoryev/FrameCalc/static/js/main.166adbf6.js",
+    "index.html": "/Pavel-Grigoryev/FrameCalc/index.html",
+    "main.a12dce70.css.map": "/Pavel-Grigoryev/FrameCalc/static/css/main.a12dce70.css.map",
+    "main.166adbf6.js.map": "/Pavel-Grigoryev/FrameCalc/static/js/main.166adbf6.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a12dce70.css",
+    "static/js/main.166adbf6.js"
+  ]
+}
