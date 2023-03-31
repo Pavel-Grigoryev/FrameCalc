@@ -6,6 +6,7 @@ import {ConfigType} from '../../api/api-types';
 
 export const getConfigTC = createAsyncThunk('config/getConfig', async () => {
     try {
+        debugger
         const res = await calcAPI.fetchConfig();
         return res.data;
     } catch (e) {
@@ -20,6 +21,7 @@ export const configSlice = createSlice({
     initialState: initialState,
     reducers: {},
     extraReducers: builder => {
+        debugger
         builder.addCase(getConfigTC.fulfilled, (state, action) => {
             return action.payload;
         });
