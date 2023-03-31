@@ -14,7 +14,7 @@ Frame calculator is an  application for  calculating the frame with coated sheet
 ## Setup
 
 1. Clone repository:  
-   `git clone https://github.com/Pavel-Grigoryev/cards-app.git`
+   `git clone https://github.com/Pavel-Grigoryev/FrameCalc.git`
 2. Initial build of the project:  
    `yarn`    The command will build all dependencies from package.js
 3. Runs the app in the development mode  
