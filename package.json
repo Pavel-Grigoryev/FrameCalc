@@ -1,6 +1,6 @@
 {
   "name": "my-app",
-  "homepage": "https://github.io/Pavel-Grigoryev/FrameCalc",
+  "homepage": "https://Pavel-Grigoryev.github.io/FrameCalc",
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!axios)/"

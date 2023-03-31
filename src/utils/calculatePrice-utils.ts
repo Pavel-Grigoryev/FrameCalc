@@ -4,7 +4,7 @@ import {ResultType} from '../features/Calculator/calculationSlice';
 export const calculatePrice = (width: number, length: number, strength: number, currentMaterial: MaterialType, currentPipe: MaterialType, currentFix: ConfigType, fixType: MaterialType) => {
     let calcResult = {} as ResultType;
 
-    const area = length * width;
+    const area = +(length * width).toFixed(2);
     calcResult.area = area;
 
     if (currentMaterial.width && currentPipe.width && currentFix.value) {
